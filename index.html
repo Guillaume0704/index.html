@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Track CTA Click</title>
+  <script>
+    async function updateOpportunityAndRedirect() {
+      // Parse URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const oppId = urlParams.get('oppId');
+      const contactId = urlParams.get('contactId');
+
+      // Check if required parameters are available
+      if (!oppId || !contactId) {
+        console.error('Missing required parameters');
+        return;
+      }
+
+      // Salesforce REST API endpoint and authentication details
+      const salesforceApiUrl = `https://your-salesforce-instance.salesforce.com/services/data/vXX.0/sobjects/Opportunity/${oppId}`;
+      const accessToken = 'YOUR_SALESFORCE_ACCESS_TOKEN'; // You need to obtain an access token
+
+      // Update the Opportunity record
+      try {
+        const response = await fetch(salesforceApiUrl, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ Clicked_CTA__c: true })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        console.log('Opportunity updated successfully');
+      } catch (error) {
+        console.error('Error updating Opportunity:', error);
+      }
+
+      // Redirect to the final destination page
+      window.location.href = 'https://www.gegoteam.be/contact/';
+    }
+
+    // Execute the function on page load
+    window.onload = updateOpportunityAndRedirect;
+  </script>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>
