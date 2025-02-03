@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assechmur_Prixtotal__c</fullName>
+    <formula>IF(
+    OR(
+        Assechmur_Nomduproduit__c = &quot;Aérogomage&quot;,
+        Assechmur_Nomduproduit__c = &quot;Cuvelage AS&quot;,
+        Assechmur_Nomduproduit__c = &quot;Foamglas 4cm&quot;,
+        Assechmur_Nomduproduit__c = &quot;Membrane&quot;,
+        Assechmur_Nomduproduit__c = &quot;Foamglas 6cm&quot;,
+        Assechmur_Nomduproduit__c = &quot;Hydrofuge&quot;
+    ),
+    Assechmur_Prixtotaltemporaire__c,
+
+    IF(
+        OR(
+            Assechmur_Nomduproduit__c = &quot;Injection&quot;,
+            Assechmur_Nomduproduit__c = &quot;Injection crème&quot;
+        ),
+        (
+            ((Assechmur_Epaisseur1__c / 100) * Assechmur_TotalMcrtlongueur1__c) +
+            ((Assechmur_Epaisseur2__c / 100) * Assechmur_TotalMcrtlongueur2__c) +
+            ((Assechmur_Epaisseur3__c / 100) * Assechmur_TotalMcrtlongueur3__c) + 
+            ((Assechmur_Epaisseur4__c / 100) * Assechmur_TotalMcrtlongueur4__c) +
+            ((Assechmur_Epaisseur5__c / 100) * Assechmur_TotalMcrtlongueur5__c) +
+            ((Assechmur_Epaisseur6__c / 100) * Assechmur_TotalMcrtlongueur6__c)
+
+        ) * Assechmur_Prixdevente__c,
+        NULL
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Prix total</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

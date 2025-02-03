@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assechmur_TotalMctsanslescoinslongueur4__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  Assechmur_Mur1longueur4__c +
+  Assechmur_Mur1longueur4X2__c +
+  Assechmur_Mur2longueur4__c +
+  Assechmur_Mur2longueur4X2__c +
+  Assechmur_Mur3longueur4__c +
+  Assechmur_Mur3longueur4X2__c +
+  Assechmur_Mur4longueur4__c +
+  Assechmur_Mur4longueur4X2__c +
+  Assechmur_Mur5longueur4__c +
+  Assechmur_Mur5longueur4X2__c +
+  Assechmur_Mur6longueur4__c +
+  Assechmur_Mur6longueur4X2__c +
+  Assechmur_Mur7longueur4__c +
+  Assechmur_Mur7longueur4X2__c +
+  Assechmur_Mur8longueur4__c +
+  Assechmur_Mur8longueur4X2__c +
+  Assechmur_BVI1longueur4__c +
+  Assechmur_BVI2longueur4__c +
+  Assechmur_BVI3longueur4__c +
+  Assechmur_BVI4longueur4__c +
+  Assechmur_BVI5longueur4__c +
+  Assechmur_BVI6longueur4__c +
+  Assechmur_BVI7longueur4__c +
+  Assechmur_BVI8longueur4__c = 0,
+  NULL,
+  Assechmur_Mur1longueur4__c +
+  Assechmur_Mur1longueur4X2__c +
+  Assechmur_Mur2longueur4__c +
+  Assechmur_Mur2longueur4X2__c +
+  Assechmur_Mur3longueur4__c +
+  Assechmur_Mur3longueur4X2__c +
+  Assechmur_Mur4longueur4__c +
+  Assechmur_Mur4longueur4X2__c +
+  Assechmur_Mur5longueur4__c +
+  Assechmur_Mur5longueur4X2__c +
+  Assechmur_Mur6longueur4__c +
+  Assechmur_Mur6longueur4X2__c +
+  Assechmur_Mur7longueur4__c +
+  Assechmur_Mur7longueur4X2__c +
+  Assechmur_Mur8longueur4__c +
+  Assechmur_Mur8longueur4X2__c +
+  Assechmur_BVI1longueur4__c +
+  Assechmur_BVI2longueur4__c +
+  Assechmur_BVI3longueur4__c +
+  Assechmur_BVI4longueur4__c +
+  Assechmur_BVI5longueur4__c +
+  Assechmur_BVI6longueur4__c +
+  Assechmur_BVI7longueur4__c +
+  Assechmur_BVI8longueur4__c
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total Mct sans les coins</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

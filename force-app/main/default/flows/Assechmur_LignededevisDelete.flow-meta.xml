@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <assignments>
+        <name>Assign_Checkbox_Montant</name>
+        <label>Assign Checkbox Montant</label>
+        <locationX>264</locationX>
+        <locationY>611</locationY>
+        <assignmentItems>
+            <assignToReference>CheckboxMontant</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_prix_total</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_prix_total</name>
+        <label>Assign prix total</label>
+        <locationX>396</locationX>
+        <locationY>803</locationY>
+        <assignmentItems>
+            <assignToReference>Sommeprixtotallignesdedevis</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_Lignes_de_devis.Assechmur_Prixtotal__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_Lignes_de_devis</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Is_Cuv_Memb_or_Foam</name>
+        <label>Is Cuv, Memb, or Foam ?</label>
+        <locationX>396</locationX>
+        <locationY>503</locationY>
+        <defaultConnector>
+            <targetReference>Assign_prix_total</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_Lignes_de_devis.Assechmur_Nomduproduit__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Cuvelage</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_through_Lignes_de_devis.Assechmur_Nomduproduit__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Membrane</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_through_Lignes_de_devis.Assechmur_Nomduproduit__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Foamglas</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Checkbox_Montant</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>This flow run when a Ligne de devis is deleted</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>MontantdevisHTVA</name>
+        <dataType>Currency</dataType>
+        <expression>{!Sommeprixtotallignesdedevis} + IF({!CheckboxMontant}, 150, 0) + {!$Record.Assechmur_Prixradiateurademonter__c} + {!$Record.Assechmur_PrixVMCencastrer__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>PrixTotalDevis</name>
+        <dataType>Currency</dataType>
+        <expression>IF({!CheckboxMontant} = TRUE, {!Sommeprixtotallignesdedevis} + 150, 
+{!Sommeprixtotallignesdedevis})</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>PrixTotalTemporaire</name>
+        <dataType>Currency</dataType>
+        <expression>IF(
+    {!$Record.Assechmur_Nomduproduit__c} = &quot;Hydrofuge&quot;,
+    IF(
+        {!$Record.Assechmur_Totalm2Surface__c} &lt; 76,
+        900,
+        {!$Record.Assechmur_Totalm2Surface__c} * {!$Record.Assechmur_Prixdevente__c}* 1.12
+    ),
+    IF(
+        OR(
+            {!$Record.Assechmur_Nomduproduit__c} = &quot;Aérogomage&quot;,
+            {!$Record.Assechmur_Nomduproduit__c} = &quot;Cuvelage AS&quot;,
+            {!$Record.Assechmur_Nomduproduit__c} = &quot;Foamglas 4cm&quot;,
+            {!$Record.Assechmur_Nomduproduit__c} = &quot;Membrane&quot;,
+           {!$Record.Assechmur_Nomduproduit__c} = &quot;Foamglas 6cm&quot;
+        ),
+        {!$Record.Assechmur_Totalm2Surface__c} * {!$Record.Assechmur_Prixdevente__c} * 1.12,
+        NULL
+    )
+)</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>prixToutEnUnPlafonnage</name>
+        <dataType>Currency</dataType>
+        <expression>IF(
+    {!$Record.Assechmur_M2plafonner__c} != 0, 
+    {!PrixTotalDevis} + {!$Record.Assechmur_Prixm2aplafonner__c}, 
+    NULL
+)</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Ligne de devis - Delete {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Ligne de devis - Delete</label>
+    <loops>
+        <name>Loop_through_Lignes_de_devis</name>
+        <label>Loop through Lignes de devis</label>
+        <locationX>176</locationX>
+        <locationY>395</locationY>
+        <collectionReference>Get_Lignes_de_devis</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Is_Cuv_Memb_or_Foam</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Devis</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Devis</name>
+        <label>Get Devis</label>
+        <locationX>176</locationX>
+        <locationY>995</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Devis</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Assechmur_Devis__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Assechmur_Devis__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Lignes_de_devis</name>
+        <label>Get Lignes de devis</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_through_Lignes_de_devis</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Assechmur_Devis__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Assechmur_Devis__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Assechmur_Lignededevis__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Devis</name>
+        <label>Update Devis</label>
+        <locationX>176</locationX>
+        <locationY>1103</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Devis.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Montant_total_devis_hors_options__c</field>
+            <value>
+                <elementReference>PrixTotalDevis</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Assechmur_Devis__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Lignes_de_devis</targetReference>
+        </connector>
+        <object>Assechmur_Lignededevis__c</object>
+        <recordTriggerType>Delete</recordTriggerType>
+        <triggerType>RecordBeforeDelete</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>CheckboxMontant</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>CheckboxNombre</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Sommeprixtotallignesdedevis</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+</Flow>

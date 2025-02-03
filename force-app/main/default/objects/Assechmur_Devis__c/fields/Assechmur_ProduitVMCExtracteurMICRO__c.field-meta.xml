@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assechmur_ProduitVMCExtracteurMICRO__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Produit VMC</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>$Source.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>VMC</value>
+        </filterItems>
+        <filterItems>
+            <field>Assechmur_Produit__c.Name</field>
+            <operation>equals</operation>
+            <value>Extracteur centrifuge (ASX MICRO C 100)</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Assechmur_Produit__c</referenceTo>
+    <relationshipLabel>Devis (Produit VMC)</relationshipLabel>
+    <relationshipName>Devis4</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

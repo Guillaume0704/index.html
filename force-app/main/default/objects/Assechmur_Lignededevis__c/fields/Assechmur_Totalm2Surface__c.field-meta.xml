@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assechmur_Totalm2Surface__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  Assechmur_Mur1Surfacem2__c + 
+  Assechmur_Mur2Surfacem2__c + 
+  Assechmur_Mur3Surfacem2__c + 
+  Assechmur_Mur4Surfacem2__c + 
+  Assechmur_Mur5Surfacem2__c + 
+  Assechmur_Mur6Surfacem2__c + 
+  Assechmur_Mur7Surfacem2__c + 
+  Assechmur_Mur8Surfacem2__c + 
+  Assechmur_Mur9Surfacem2__c + 
+  Assechmur_Mur10Surfacem2__c = 0,
+  NULL,
+  Assechmur_Mur1Surfacem2__c + 
+  Assechmur_Mur2Surfacem2__c + 
+  Assechmur_Mur3Surfacem2__c + 
+  Assechmur_Mur4Surfacem2__c + 
+  Assechmur_Mur5Surfacem2__c + 
+  Assechmur_Mur6Surfacem2__c + 
+  Assechmur_Mur7Surfacem2__c + 
+  Assechmur_Mur8Surfacem2__c + 
+  Assechmur_Mur9Surfacem2__c + 
+  Assechmur_Mur10Surfacem2__c
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total m² - Surface</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validation_Marge_Max</fullName>
+    <active>true</active>
+    <errorConditionFormula>Assechmur_Marge__c &gt; 0.15</errorConditionFormula>
+    <errorMessage>La marge ne doit pas dépasser 15%</errorMessage>
+</ValidationRule>
